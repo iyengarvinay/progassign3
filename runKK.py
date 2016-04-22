@@ -107,13 +107,15 @@ def simAnneal(numList, n):
     homeSolution = list(randSolution)
     homeRes = minResidue
 
-    probs = [[]]
+    #probs = [[]]
+
+    #switches = 0
+    #succswitches = 0
 
     # find random neighbor of S
     for j in range(MAX_ITER):
         # copy solution list in order to change
         neighbor = list(randSolution)
-
         # make one switch
         switch = random.randint(0,n-1)
         neighbor[switch] *= -1
@@ -129,9 +131,10 @@ def simAnneal(numList, n):
         for i in range(n):
             residue = abs(residue + (neighbor[i] * numList[i]))
 
-        if(residue < minResidue):
+        if (residue <= minResidue):
             minResidue = residue
             randSolution = list(neighbor)
+            switches += 1
 
         else:
             tens = pow(10,10)
@@ -141,18 +144,23 @@ def simAnneal(numList, n):
             #print(exponent)
             prob = math.exp(exponent)
             probs.append([prob])
-            if (random.uniform(0,1) > prob):
+            if (random.uniform(0,1) <= prob):
                 randSolution = list(neighbor)
                 minResidue = residue
+                switches += 1
 
-        if(residue < homeRes):
+        if (residue < homeRes):
             homeSolution = list(neighbor)
             homeRes = residue
+            succswitches += 1
 
-    csvSim = open('simFunc.csv','w')
-    wr = csv.writer(csvSim, quotechar=None)
-    wr.writerows(probs)
-    csvSim.close()
+
+    #csvSim = open('simFunc.csv','w')
+    #wr = csv.writer(csvSim, quotechar=None)
+    #wr.writerows(probs)
+    #csvSim.close()
+    #print(switches)
+    #print(succswitches)
     return minResidue
 
 def printSol(numList, signList, n):
