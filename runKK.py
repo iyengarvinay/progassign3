@@ -21,7 +21,7 @@ def kkRun(numList):
 
     return (A[0])
 
-def repeatedRandom(numList):
+def repeatedRandomSolution(numList):
     minResidue = max(numList)
     for j in range(25000):
         randSolution = [0]*100
@@ -29,6 +29,20 @@ def repeatedRandom(numList):
         for i in range(100):
             randSolution[i] = random.choice([-1,1])
             residue = abs(residue + (randSolution[i] * numList[i]))
+        if(residue < minResidue):
+            minResidue = residue
+
+    return minResidue
+
+def repeatedRandomPartition(numList):
+    minResidue = max(numList)
+    for j in range(25000):
+        randPartition = [0]*100
+        numListModified = [0]*100
+        for i in range(100):
+            randPartition[i] = random.randint(0,99)
+            numListModified[randPartition[i]] = numList[i] + numListModified[randPartition[i]]
+        residue = kkRun(numListModified)
         if(residue < minResidue):
             minResidue = residue
 
@@ -71,17 +85,15 @@ def hillClimb(numList):
             minResidue = residue
             randSolution = neighbor
 
-    return minResidue
-
-
+        return minResidue
 
 # compute results
-results = [["Random Set", "KK Result", "Repeated Random", "Hill Climbing", "Simulated Annealing"]]
+results = [["Random Set", "KK Result", "Repeated Random - Solution", "Repeated Random - Partition", "Hill Climbing - Solution", "Hill Climbing - Partition", "Simulated Annealing - Solution", "Simulated Annealing - Partition"]]
 
 for i in range(int(sys.argv[1])):
     filename = "nums" + str(i) + ".txt"
     A = [int(line.rstrip('\n')) for line in open(filename)]
-    results.append([i, kkRun(A), repeatedRandom(A)])
+    results.append([i, kkRun(A), repeatedRandomSolution(A), repeatedRandomPartition(A)])
 
 print (results)
 
