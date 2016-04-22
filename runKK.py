@@ -48,6 +48,9 @@ def repeatedRandomPartition(numList):
 
     return minResidue
 
+# choose random solution in neighborhood
+# change one sign with probability 100 / 5050 (100 = 100 choose 1)
+# change two with probability 4950 / 5050 (4950 = 100 choose 2)
 def hillClimb(numList):
 
     # create random solution S
@@ -68,14 +71,14 @@ def hillClimb(numList):
 
         # make one switch
         switch = random.uniform(0,99)
-        neighbor[switch] = (neighbor[switch] == -1) ? 1 : -1
+        neighbor[switch] = 1 if (neighbor[switch] == -1) else -1
 
         if (r < threshold):
             # make second switch
             switch2 = random.uniform(0,99)
             while (switch == switch2):
                 switch2 = random.uniform(0,99)
-            neighbor[switch2] = (neighbor[switch2] == -1) ? 1 : -1
+            neighbor[switch2] = 1 if (neighbor[switch2] == -1) else -1
         
         residue = 0
         for i in range(100):
@@ -96,16 +99,6 @@ for i in range(int(sys.argv[1])):
     results.append([i, kkRun(A), repeatedRandomSolution(A), repeatedRandomPartition(A)])
 
 print (results)
-
-# choosing one or two changes for neighborhood
-# one with probability 100 / 5050 (100 = 100 choose 1)
-# two with probability 4950 / 5050 (4950 = 100 choose 2)
-total = 5050
-r = random.uniform(0, total)
-if (r >= 4950):
-    # make one switch
-else:
-    # make two switches
 
 
 csvfile = open('kkResults.csv','w')
