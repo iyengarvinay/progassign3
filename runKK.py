@@ -4,6 +4,8 @@ import sys
 import csv
 import random
 import copy
+import math
+from decimal import *
 
 if (len(sys.argv) != 2):
     print ("usage: python3 runKK.py numSets")
@@ -86,7 +88,7 @@ def hillClimb(numList):
 
         if(residue < minResidue):
             minResidue = residue
-            randSolution = neighbor
+            randSolution = list(neighbor)
 
         return minResidue
 
@@ -99,6 +101,8 @@ def simAnneal(numList):
         randSolution[i] = random.choice([-1,1])
         residue = abs(residue + (randSolution[i] * numList[i]))
     minResidue = residue
+    homeSolution = list(randSolution)
+    homeRes = minResidue
 
     # find random neighbor of S
     total = 5050
@@ -125,9 +129,24 @@ def simAnneal(numList):
 
         if(residue < minResidue):
             minResidue = residue
-            randSolution = neighbor
+            randSolution = list(neighbor)
 
-        return minResidue
+        else:
+            tens = pow(10,10)
+            bottom = pow(0.8,(math.floor(j/300)))
+            resDiff = -(residue - minResidue)
+            exponent = resDiff/(tens*bottom)
+            print(exponent)
+            prob = math.exp(exponent)
+            if (random.uniform(0,1) > prob):
+                randSolution = list(neighbor)
+                minResidue = residue
+
+        if(residue < homeRes):
+            homeSolution = list(neighbor)
+            homeRes = residue
+
+    return minResidue
 
 # compute results
 results = [["Random Set", "KK Result", "Repeated Random - Solution", "Repeated Random - Partition", "Hill Climbing - Solution", "Hill Climbing - Partition", "Simulated Annealing - Solution", "Simulated Annealing - Partition"]]
@@ -135,8 +154,8 @@ results = [["Random Set", "KK Result", "Repeated Random - Solution", "Repeated R
 for i in range(int(sys.argv[1])):
     filename = "nums" + str(i) + ".txt"
     A = [int(line.rstrip('\n')) for line in open(filename)]
-    results.append([i, kkRun(A), repeatedRandomSolution(A), repeatedRandomPartition(A), hillClimb(A)])
-    #results.append([i, kkRun(A), hillClimb(A)])
+    #results.append([i, kkRun(A), repeatedRandomSolution(A), repeatedRandomPartition(A), hillClimb(A), simAnneal(A)])
+    results.append([i, kkRun(A), hillClimb(A), simAnneal(A)])
 print (results)
 
 
