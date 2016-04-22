@@ -39,7 +39,6 @@ def repeatedRandomSolution(numList, n):
     return minResidue
 
 def repeatedRandomPartition(numList, n):
-
     minResidue = max(numList)
     for j in range(MAX_ITER):
         randPartition = [0]*n
@@ -57,8 +56,6 @@ def repeatedRandomPartition(numList, n):
 # change one sign with probability 100 / 5050 (100 = 100 choose 1)
 # change two with probability 4950 / 5050 (4950 = 100 choose 2)
 def hillClimb(numList, n):
-
-    # create random solution S
     randSolution = [0]*n
     residue = 0
     for i in range(n):
@@ -95,27 +92,19 @@ def hillClimb(numList, n):
 
     return minResidue
 
-def simAnneal(numList, n):
-
-    # create random solution S
+def hillClimbPartition(numList, n):
     randSolution = [0]*n
     residue = 0
     for i in range(n):
         randSolution[i] = random.choice([-1,1])
         residue = abs(residue + (randSolution[i] * numList[i]))
     minResidue = residue
-    homeSolution = list(randSolution)
-    homeRes = minResidue
-
-    #probs = [[]]
-
-    #switches = 0
-    #succswitches = 0
 
     # find random neighbor of S
     for j in range(MAX_ITER):
         # copy solution list in order to change
         neighbor = list(randSolution)
+
         # make one switch
         switch = random.randint(0,n-1)
         neighbor[switch] *= -1
@@ -126,41 +115,18 @@ def simAnneal(numList, n):
             while (switch == switch2):
                 switch2 = random.randint(0,n-1)
             neighbor[switch2] *= -1
+        
+        #print("neighbor {}", j)
+        #printSol(numList, neighbor, n)
 
         residue = 0
         for i in range(n):
             residue = abs(residue + (neighbor[i] * numList[i]))
 
-        if (residue <= minResidue):
+        if(residue < minResidue):
             minResidue = residue
             randSolution = list(neighbor)
-            switches += 1
 
-        else:
-            tens = pow(10,10)
-            bottom = pow(0.8,(math.floor(j/300)))
-            resDiff = -(residue - minResidue)
-            exponent = resDiff/(tens*bottom)
-            #print(exponent)
-            prob = math.exp(exponent)
-            probs.append([prob])
-            if (random.uniform(0,1) <= prob):
-                randSolution = list(neighbor)
-                minResidue = residue
-                switches += 1
-
-        if (residue < homeRes):
-            homeSolution = list(neighbor)
-            homeRes = residue
-            succswitches += 1
-
-
-    #csvSim = open('simFunc.csv','w')
-    #wr = csv.writer(csvSim, quotechar=None)
-    #wr.writerows(probs)
-    #csvSim.close()
-    #print(switches)
-    #print(succswitches)
     return minResidue
 
 def printSol(numList, signList, n):
