@@ -20,7 +20,6 @@ def kkRun(numList):
 
     return (A[0])
 
-
 def repeatedRandom(numList):
     minResidue = max(numList)
     for j in range(25000):
@@ -34,6 +33,47 @@ def repeatedRandom(numList):
 
     return minResidue
 
+def hillClimb(numList):
+
+    # create random solution S
+    randSolution = [0]*100
+    residue = 0
+    for i in range(100):
+        randSolution[i] = random.choice([-1,1])
+        residue = abs(residue + (randSolution[i] * numList[i]))
+    minResidue = residue
+
+    # find random neighbor of S
+    total = 5050
+    threshold = 4950
+    for j in range(25000):
+        neighbor = list(randSolution)
+        r = random.uniform(0, total)
+
+        # make one switch
+        switch = random.uniform(0,99)
+        neighbor[switch] = (neighbor[switch] == -1) ? 1 : -1
+
+        if (r < threshold):
+            # make second switch
+            switch2 = random.uniform(0,99)
+            while (switch == switch2):
+                switch2 = random.uniform(0,99)
+            neighbor[switch2] = (neighbor[switch2] == -1) ? 1 : -1
+        
+        residue = 0
+        for i in range(100):
+            residue = abs(residue + (neighbor[i] * numList[i]))
+
+        if(residue < minResidue):
+            minResidue = residue
+            randSolution = neighbor
+
+    return minResidue
+
+
+
+# compute results
 results = [["Random Set", "KK Result", "Repeated Random", "Hill Climbing", "Simulated Annealing"]]
 
 for i in range(int(sys.argv[1])):
