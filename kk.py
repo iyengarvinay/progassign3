@@ -20,18 +20,6 @@ for i in range(len(A) - 1):
 
 print(A[0])
 
-minResidue = max(original)
-for j in range(25000):
-	randSolution = [0]*100
-	residue = 0
-	for i in range(100):
-		randSolution[i] = random.choice([-1,1])
-		residue = abs(residue + (randSolution[i] * original[i]))
-	if(residue < minResidue):
-		minResidue = residue
-
-print(minResidue)
-
-
+	
 
 	
