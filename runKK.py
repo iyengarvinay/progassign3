@@ -177,7 +177,7 @@ def simAnneal(numList, n):
             exponent = resDiff/(tens*bottom)
             #print(exponent)
             prob = math.exp(exponent)
-            probs.append([prob])
+            #probs.append([prob])
             if (random.uniform(0,1) <= prob):
                 randSolution = list(neighbor)
                 minResidue = residue
@@ -187,7 +187,6 @@ def simAnneal(numList, n):
             homeSolution = list(neighbor)
             homeRes = residue
             #succswitches += 1
-
 
     #csvSim = open('simFunc.csv','w')
     #wr = csv.writer(csvSim, quotechar=None)
