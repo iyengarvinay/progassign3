@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-# usage: python genNums.py maxValue setSize numSets
+# usage: python3 genNums.py maxValue setSize numSets
 # where maxValue is the top bound for any integer element of the matrix
 
 import random
@@ -28,4 +28,4 @@ numSets = int(sys.argv[3])
 
 for i in range(numSets):
     numList = genNums(setSize, maxVal)
-    writeNums(numList, "nums{}.txt".format(i + 1))
+    writeNums(numList, "nums{}.txt".format(i))
