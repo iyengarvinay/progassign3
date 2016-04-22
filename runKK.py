@@ -70,14 +70,53 @@ def hillClimb(numList):
         r = random.uniform(0, total)
 
         # make one switch
-        switch = random.uniform(0,99)
+        switch = random.randint(0,99)
         neighbor[switch] = 1 if (neighbor[switch] == -1) else -1
 
         if (r < threshold):
             # make second switch
-            switch2 = random.uniform(0,99)
+            switch2 = random.randint(0,99)
             while (switch == switch2):
-                switch2 = random.uniform(0,99)
+                switch2 = random.randint(0,99)
+            neighbor[switch2] = 1 if (neighbor[switch2] == -1) else -1
+        
+        residue = 0
+        for i in range(100):
+            residue = abs(residue + (neighbor[i] * numList[i]))
+
+        if(residue < minResidue):
+            minResidue = residue
+            randSolution = neighbor
+
+        return minResidue
+
+def simAnneal(numList):
+
+    # create random solution S
+    randSolution = [0]*100
+    residue = 0
+    for i in range(100):
+        randSolution[i] = random.choice([-1,1])
+        residue = abs(residue + (randSolution[i] * numList[i]))
+    minResidue = residue
+
+    # find random neighbor of S
+    total = 5050
+    threshold = 4950
+    for j in range(25000):
+        # copy solution list in order to change
+        neighbor = list(randSolution)
+        r = random.uniform(0, total)
+
+        # make one switch
+        switch = random.randint(0,99)
+        neighbor[switch] = 1 if (neighbor[switch] == -1) else -1
+
+        if (r < threshold):
+            # make second switch
+            switch2 = random.randint(0,99)
+            while (switch == switch2):
+                switch2 = random.randint(0,99)
             neighbor[switch2] = 1 if (neighbor[switch2] == -1) else -1
         
         residue = 0
@@ -96,8 +135,8 @@ results = [["Random Set", "KK Result", "Repeated Random - Solution", "Repeated R
 for i in range(int(sys.argv[1])):
     filename = "nums" + str(i) + ".txt"
     A = [int(line.rstrip('\n')) for line in open(filename)]
-    results.append([i, kkRun(A), repeatedRandomSolution(A), repeatedRandomPartition(A)])
-
+    results.append([i, kkRun(A), repeatedRandomSolution(A), repeatedRandomPartition(A), hillClimb(A)])
+    #results.append([i, kkRun(A), hillClimb(A)])
 print (results)
 
 
