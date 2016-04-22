@@ -26,7 +26,7 @@ for j in range(25000):
 	residue = 0
 	for i in range(100):
 		randSolution[i] = random.choice([-1,1])
-		residue = residue + (randSolution[i] * original[i])
+		residue = abs(residue + (randSolution[i] * original[i]))
 	if(residue < minResidue):
 		minResidue = residue
 
