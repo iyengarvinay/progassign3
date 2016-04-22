@@ -82,6 +82,9 @@ def hillClimb(numList, n):
                 switch2 = random.randint(0,n-1)
             neighbor[switch2] *= -1
         
+        #print("neighbor {}", j)
+        #printSol(numList, neighbor, n)
+
         residue = 0
         for i in range(n):
             residue = abs(residue + (neighbor[i] * numList[i]))
@@ -90,7 +93,7 @@ def hillClimb(numList, n):
             minResidue = residue
             randSolution = list(neighbor)
 
-        return minResidue
+    return minResidue
 
 def simAnneal(numList, n):
 
@@ -103,6 +106,8 @@ def simAnneal(numList, n):
     minResidue = residue
     homeSolution = list(randSolution)
     homeRes = minResidue
+
+    probs = [[]]
 
     # find random neighbor of S
     for j in range(MAX_ITER):
@@ -135,8 +140,7 @@ def simAnneal(numList, n):
             exponent = resDiff/(tens*bottom)
             #print(exponent)
             prob = math.exp(exponent)
-            #if (j < 300):
-                #print (prob)
+            probs.append([prob])
             if (random.uniform(0,1) > prob):
                 randSolution = list(neighbor)
                 minResidue = residue
@@ -145,7 +149,22 @@ def simAnneal(numList, n):
             homeSolution = list(neighbor)
             homeRes = residue
 
+    csvSim = open('simFunc.csv','w')
+    wr = csv.writer(csvSim, quotechar=None)
+    wr.writerows(probs)
+    csvSim.close()
     return minResidue
+
+def printSol(numList, signList, n):
+    A = []
+    B = []
+    for i in range(n):
+        if(signList[i] == 1):
+            A.append(numList[i])
+        else:
+            B.append(numList[i])
+    print(A)
+    print(B)
 
 # test numList: KK is 2
 test = [10, 8, 7, 6, 5]
@@ -159,12 +178,13 @@ for i in range(int(sys.argv[1])):
     A = [int(line.rstrip('\n')) for line in open(filename)]
     lenA = len(A)
     #results.append([i, kkRun(A), repeatedRandomSolution(A), repeatedRandomPartition(A), hillClimb(A), simAnneal(A)])
-    results.append([i, kkRun(test, lenTest), repeatedRandomSolution(test, lenTest), hillClimb(test, lenTest), simAnneal(test, lenTest)])
+    #results.append([i, kkRun(test, lenTest), repeatedRandomSolution(test, lenTest), hillClimb(test, lenTest), simAnneal(test, lenTest)])
+    results.append([i, kkRun(A, lenA), repeatedRandomSolution(A, lenA), hillClimb(A, lenA), simAnneal(A, lenA)])
 for line in results:
     print (line)
 
 
-csvfile = open('kkResults.csv','w')
-wr = csv.writer(csvfile, quotechar=None)
+csvFile = open('kkResults.csv','w')
+wr = csv.writer(csvFile, quotechar=None)
 wr.writerows(results)
-csvfile.close()
+csvFile.close()
