@@ -168,7 +168,7 @@ def simAnneal(numList, n):
         if (residue <= minResidue):
             minResidue = residue
             randSolution = list(neighbor)
-            switches += 1
+            #switches += 1
 
         else:
             tens = pow(10,10)
@@ -181,12 +181,12 @@ def simAnneal(numList, n):
             if (random.uniform(0,1) <= prob):
                 randSolution = list(neighbor)
                 minResidue = residue
-                switches += 1
+                #switches += 1
 
         if (residue < homeRes):
             homeSolution = list(neighbor)
             homeRes = residue
-            succswitches += 1
+            #succswitches += 1
 
 
     #csvSim = open('simFunc.csv','w')
