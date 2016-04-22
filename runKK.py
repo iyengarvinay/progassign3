@@ -2,6 +2,7 @@ import fileinput
 import bisect
 import sys
 import csv
+import random
 
 if (len(sys.argv) != 2):
     print ("usage: python3 runKK.py numSets")
@@ -19,12 +20,26 @@ def kkRun(numList):
 
     return (A[0])
 
-results = [["Random Set", "KK Result"]]
+
+def repeatedRandom(numList):
+    minResidue = max(numList)
+    for j in range(25000):
+        randSolution = [0]*100
+        residue = 0
+        for i in range(100):
+            randSolution[i] = random.choice([-1,1])
+            residue = abs(residue + (randSolution[i] * numList[i]))
+        if(residue < minResidue):
+            minResidue = residue
+
+    return minResidue
+
+results = [["Random Set", "KK Result", "Repeated Random", "Hill Climbing", "Simulated Annealing"]]
 
 for i in range(int(sys.argv[1])):
     filename = "nums" + str(i) + ".txt"
     A = [int(line.rstrip('\n')) for line in open(filename)]
-    results.append([i, kkRun(A)])
+    results.append([i, kkRun(A), repeatedRandom(A)])
 
 print (results)
 
