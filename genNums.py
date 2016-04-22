@@ -9,7 +9,7 @@ import sys
 
 def genNums(n, maxVal):
     lst = []
-    for i in xrange(n):
+    for i in range(n):
         lst.append(random.randint(1, maxVal))
     return lst
 
@@ -19,10 +19,10 @@ def writeNums(numList, filename):
         f.write(str(num) + "\n")
 
 if (len(sys.argv) != 4):
-    print "usage: python genNums.py maxValue setSize numSets"
+    print ("usage: python genNums.py maxValue setSize numSets")
     exit(1)
 
-maxVal = long(sys.argv[1])
+maxVal = int(sys.argv[1])
 setSize = int(sys.argv[2])
 numSets = int(sys.argv[3])
 
