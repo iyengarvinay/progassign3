@@ -28,7 +28,15 @@ for i in range(int(sys.argv[1])):
 
 print (results)
 
-
+# choosing one or two changes for neighborhood
+# one with probability 100 / 5050 (100 = 100 choose 1)
+# two with probability 4950 / 5050 (4950 = 100 choose 2)
+total = 5050
+r = random.uniform(0, total)
+if (r >= 4950):
+    # make one switch
+else:
+    # make two switches
 
 
 csvfile = open('kkResults.csv','w')
