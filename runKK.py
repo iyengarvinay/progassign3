@@ -7,24 +7,23 @@ if (len(sys.argv) != 2):
     print ("usage: python3 runKK.py numSets")
     exit(1)
 
-def kkRun(filename):
-    A = [int(line.rstrip('\n')) for line in open(filename)]
+def kkRun(numList):
+    numList.sort()
 
-    A.sort()
-
-    for i in range(len(A) - 1):
-        a1 = A.pop()
-        a2 = A.pop()
+    for i in range(len(numList) - 1):
+        a1 = numList.pop()
+        a2 = numList.pop()
         diff = a1 - a2
-        bisect.insort(A, diff)
+        bisect.insort(numList, diff)
 
-    return (A[0])
+    return (numList[0])
 
 results = [["Random Set", "KK Result"]]
 
 for i in range(int(sys.argv[1])):
     filename = "nums" + str(i) + ".txt"
-    results.append([i, kkRun(filename)])
+    A = [int(line.rstrip('\n')) for line in open(filename)]
+    results.append([i, kkRun(A)])
 
 print (results)
 csvfile = open('kkResults.csv','w')
