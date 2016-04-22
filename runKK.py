@@ -3,6 +3,7 @@ import bisect
 import sys
 import csv
 import random
+import copy
 
 if (len(sys.argv) != 2):
     print ("usage: python3 runKK.py numSets")
@@ -47,6 +48,7 @@ def hillClimb(numList):
     total = 5050
     threshold = 4950
     for j in range(25000):
+        # copy solution list in order to change
         neighbor = list(randSolution)
         r = random.uniform(0, total)
 
