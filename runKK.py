@@ -6,6 +6,7 @@ import random
 import copy
 import math
 from decimal import *
+import time
 
 MAX_ITER = 25000
 
@@ -45,21 +46,25 @@ def createRandPart(numList, n):
 
 def repeatedRandomSolution(res, numList, n):
     minResidue = res
+    t0 = time.clock()
     for j in range(MAX_ITER):
         residue = (createRandSol(numList, n))[1]
         if(residue < minResidue):
             minResidue = residue
 
-    return minResidue
+    timing = time.clock() - t0
+    return (minResidue, timing)
 
 def repeatedRandomPartition(res, numList, n):
     minResidue = res
+    t0 = time.clock()
     for j in range(MAX_ITER):
         residue = (createRandPart(numList, n))[1]
         if(residue < minResidue):
             minResidue = residue
 
-    return minResidue
+    timing = time.clock() - t0
+    return (minResidue, timing)
 
 # choose random solution in neighborhood
 # change one sign with probability 100 / 5050 (100 = 100 choose 1)
@@ -69,6 +74,7 @@ def hillClimb(S, res, numList, n):
     residue = res
     minResidue = residue
 
+    t0 = time.clock()
     # find random neighbor of S
     for j in range(MAX_ITER):
         # copy solution list in order to change
@@ -96,7 +102,8 @@ def hillClimb(S, res, numList, n):
             minResidue = residue
             randSolution = list(neighbor)
 
-    return minResidue
+    timing = time.clock() - t0
+    return (minResidue, timing)
 
 def hillClimbPartition(P, res, numList, n):
 
@@ -106,6 +113,7 @@ def hillClimbPartition(P, res, numList, n):
     residue = res
     minResidue = residue
 
+    t0 = time.clock()
     for j in range(MAX_ITER):
         # copy partition
         neighbor = list(randPartition)
@@ -136,7 +144,8 @@ def hillClimbPartition(P, res, numList, n):
             minResidue = residue
             randPartition = list(neighbor)
 
-    return minResidue
+    timing = time.clock() - t0
+    return (minResidue, timing)
 
 def simAnneal(S, res, numList, n):
 
@@ -151,7 +160,7 @@ def simAnneal(S, res, numList, n):
 
     #switches = 0
     #succswitches = 0
-
+    t0 = time.clock()
     # find random neighbor of S
     for j in range(MAX_ITER):
         # copy solution list in order to change
@@ -200,7 +209,8 @@ def simAnneal(S, res, numList, n):
     #csvSim.close()
     #print(switches)
     #print(succswitches)
-    return minResidue
+    timing = time.clock() - t0
+    return (minResidue, timing)
 
 def simAnnealPartition(P, res, numList, n):
 
@@ -212,6 +222,7 @@ def simAnnealPartition(P, res, numList, n):
     homePartition = list(randPartition)
     homeRes = minResidue
 
+    t0 = time.clock()
     for j in range(MAX_ITER):
         # copy partition
         neighbor = list(randPartition)
@@ -256,7 +267,8 @@ def simAnnealPartition(P, res, numList, n):
             homePartition = list(neighbor)
             homeRes = residue
 
-    return minResidue
+    timing = time.clock() - t0
+    return (minResidue, timing)
 
 def printSol(numList, signList, n):
     A = []
@@ -275,7 +287,7 @@ lenTest = len(test)
 
 # compute results
 #results = [["Random Set", "KK Result", "Repeated Random - Solution", "Repeated Random - Partition", "Hill Climbing - Solution", "Hill Climbing - Partition", "Simulated Annealing - Solution", "Simulated Annealing - Partition"]]
-results = [["Random Set", "KK", "RR", "RR Partition", "Hill Climb", "Hill Climb Partition", "Simulated Annealing", "SimAnneal Partition"]]
+results = [["Random Set", "KK", "RR", "RR Time", "RR Partition", "RR Partition Time", "Hill Climb", "HC Time", "HC Partition", "HC Partition Time", "Simulated Annealing", "Sim Anneal Time", "SimAnneal Partition", "SimAnneal Partition Time"]]
 for i in range(int(sys.argv[1])):
     filename = "nums" + str(i) + ".txt"
     A = [int(line.rstrip('\n')) for line in open(filename)]
@@ -284,7 +296,7 @@ for i in range(int(sys.argv[1])):
     initP = createRandPart(A, lenA)
     #results.append([i, kkRun(A), repeatedRandomSolution(A), repeatedRandomPartition(A), hillClimb(A), simAnneal(A)])
     #results.append([i, kkRun(test, lenTest), repeatedRandomSolution(test, lenTest), hillClimb(test, lenTest), simAnneal(test, lenTest)])
-    results.append([i, kkRun(A, lenA), repeatedRandomSolution(initS[1], A, lenA), repeatedRandomPartition(initP[1], A, lenA), hillClimb(initS[0], initS[1], A, lenA), hillClimbPartition(initP[0], initP[1], A, lenA), simAnneal(initS[0], initS[1], A, lenA), simAnnealPartition(initP[0], initP[1], A, lenA)])
+    results.append([i, kkRun(A, lenA), repeatedRandomSolution(initS[1], A, lenA)[0], repeatedRandomSolution(initS[1], A, lenA)[1], repeatedRandomPartition(initP[1], A, lenA)[0], repeatedRandomPartition(initP[1], A, lenA)[1], hillClimb(initS[0], initS[1], A, lenA)[0], hillClimb(initS[0], initS[1], A, lenA)[1], hillClimbPartition(initP[0], initP[1], A, lenA)[0], hillClimbPartition(initP[0], initP[1], A, lenA)[1], simAnneal(initS[0], initS[1], A, lenA)[0], simAnneal(initS[0], initS[1], A, lenA)[1], simAnnealPartition(initP[0], initP[1], A, lenA)[0],simAnnealPartition(initP[0], initP[1], A, lenA)[1]])
 for line in results:
     print (line)
 
