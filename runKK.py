@@ -124,15 +124,6 @@ def hillClimbPartition(P, res, numList, n):
         while (neighbor[switch] == randPartition[switch]):
             neighbor[switch] = random.randint(0, n-1)
 
-        # second switch with prob 1/2
-        if (random.getrandbits(1) == 1):
-            switch2 = random.randint(0, n-1)
-            while (switch == switch2):
-                switch2 = random.randint(0, n-1)
-            neighbor[switch2] = random.randint(0, n-1)
-            while (neighbor[switch2] == randPartition[switch2]):
-                neighbor[switch2] = random.randint(0, n-1)
-
         numListModified = [0]*n
         for i in range(n):
             #neighbor[i] = random.randint(0, n-1)
@@ -233,15 +224,6 @@ def simAnnealPartition(P, res, numList, n):
         while (neighbor[switch] == randPartition[switch]):
             neighbor[switch] = random.randint(0, n-1)
 
-        # second switch with prob 1/2
-        if (random.getrandbits(1) == 1):
-            switch2 = random.randint(0, n-1)
-            while (switch == switch2):
-                switch2 = random.randint(0, n-1)
-            neighbor[switch2] = random.randint(0, n-1)
-            while (neighbor[switch2] == randPartition[switch2]):
-                neighbor[switch2] = random.randint(0, n-1)
-
         numListModified = [0]*n
         for i in range(n):
             numListModified[neighbor[i]] = numList[i] + numListModified[neighbor[i]]
@@ -294,9 +276,14 @@ for i in range(int(sys.argv[1])):
     lenA = len(A)
     initS = createRandSol(A, lenA)
     initP = createRandPart(A, lenA)
+
+    t0 = time.clock()
+    kk_result = kkRun(A, lenA)
+    kk_time = time.clock() - t0
+
     #results.append([i, kkRun(A), repeatedRandomSolution(A), repeatedRandomPartition(A), hillClimb(A), simAnneal(A)])
     #results.append([i, kkRun(test, lenTest), repeatedRandomSolution(test, lenTest), hillClimb(test, lenTest), simAnneal(test, lenTest)])
-    results.append([i, kkRun(A, lenA), repeatedRandomSolution(initS[1], A, lenA)[0], repeatedRandomSolution(initS[1], A, lenA)[1], repeatedRandomPartition(initP[1], A, lenA)[0], repeatedRandomPartition(initP[1], A, lenA)[1], hillClimb(initS[0], initS[1], A, lenA)[0], hillClimb(initS[0], initS[1], A, lenA)[1], hillClimbPartition(initP[0], initP[1], A, lenA)[0], hillClimbPartition(initP[0], initP[1], A, lenA)[1], simAnneal(initS[0], initS[1], A, lenA)[0], simAnneal(initS[0], initS[1], A, lenA)[1], simAnnealPartition(initP[0], initP[1], A, lenA)[0],simAnnealPartition(initP[0], initP[1], A, lenA)[1]])
+    results.append([i, kk_result, kk_time, repeatedRandomSolution(initS[1], A, lenA)[0], repeatedRandomSolution(initS[1], A, lenA)[1], repeatedRandomPartition(initP[1], A, lenA)[0], repeatedRandomPartition(initP[1], A, lenA)[1], hillClimb(initS[0], initS[1], A, lenA)[0], hillClimb(initS[0], initS[1], A, lenA)[1], hillClimbPartition(initP[0], initP[1], A, lenA)[0], hillClimbPartition(initP[0], initP[1], A, lenA)[1], simAnneal(initS[0], initS[1], A, lenA)[0], simAnneal(initS[0], initS[1], A, lenA)[1], simAnnealPartition(initP[0], initP[1], A, lenA)[0],simAnnealPartition(initP[0], initP[1], A, lenA)[1]])
 for line in results:
     print (line)
 
