@@ -4,7 +4,7 @@ import sys
 import random
 
 if (len(sys.argv) != 2):
-    print ("usage: python3 <inputfile>")
+    print ("usage: python kk.py <inputfile>")
     exit(1)
 
 A = [int(line.rstrip('\n')) for line in open(sys.argv[1])]
